@@ -1,0 +1,31 @@
+Launch Code Project
+Book Review Web Applicaion
+List of Books with:
+Title
+Subject
+Author
+Summary
+Category
+List of people who have read it
+(If the person has read the book) Review and Rating
+Ability to buy
+Ability to connect with other users who have read this book
+“Book Club” Where users will discuss a book while reading said book
+
+Step 1: Make a database to hold book and user infromation
+Step 2: Set main script to run program
+Step 3: Set routing addresses
+	a: main page that lists all books (possibly by order of Title, Author, Newest, highest rated, most read)
+	b: page to add new book
+	c: page to edit book
+	d: page to delete a book
+	e: page to look at a specific book with details and buttons to make as read, rate, and buy
+	f: page to edit detail of book
+	g: page for forum
+	h: page to set time to read book and discuss with others
+Step 4: Set CRUD function for books
+Step 5: Set up user signin and authorization
+	- Both sign-in though website, facebook, and google
+Step 6: Use Amazon API to allow users to buy book
+Step 7: Make a forum
+Step 8: Make "Book Club" function

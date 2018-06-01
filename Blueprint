@@ -20,7 +20,7 @@ Step 3: Set routing addresses
 	c: page to edit book
 	d: page to delete a book
 	e: page to look at a specific book with details and buttons to make as read, rate, and buy
-	f: page to edit detail of book
+	f: page to signin to user information
 	g: page for forum
 	h: page to set time to read book and discuss with others
 Step 4: Set CRUD function for books

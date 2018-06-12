@@ -16,39 +16,52 @@ session = DBSession()
 @app.route('/books/')
 def bookList():
 	books = session.query(Book)
-	output = ''
-	output += '<h1>Books</h1>'
-	for book in books:
-		output += book.title
-		output += '</br>'
-	return output
+	return render_template('bookList.html', books = books)
+	#output = ''
+	#output += '<h1>Books</h1>'
+	#for book in books:
+	#	output += book.title
+	#	output += '</br>'
+	#return output
 
 # Route for individual book information
 @app.route('/books/<int:book_id>/')
-def bookInformaion(book_id):
-	books = session.query(Book).filter_by(id = book_id)
-	output = ''
-	for book in books:
-		output += '<h1>'
-		output += book.title
-		output += '</h1>'
-		output += 'Author: ' + str(book.author)
-		if book.subject is not None:
-			output += 'Subject: ' + str(book.subject)
-		if book.category is not None:
-			output += 'Category: ' + str(book.category)
-		if book.summary is not None:
-			output += 'Summary; ' + str(book.summary)
-		output += '</br>'
-	return output
+def bookInformation(book_id):
+	book = session.query(Book).filter_by(id = book_id).one()
+	return render_template('bookinfo.html', book = book)
+
+	#output = ''
+	#for book in books:
+	#	output += '<h1>'
+	#	output += book.title
+	#	output += '</h1>'
+	#	output += 'Author: ' + str(book.author)
+	#	if book.subject is not None:
+	#		output += 'Subject: ' + str(book.subject)
+	#	if book.category is not None:
+	#		output += 'Category: ' + str(book.category)
+	#	if book.summary is not None:
+	#		output += 'Summary; ' + str(book.summary)
+	#	output += '</br>'
+	#return output
 
 
 # Route for adding a new book
 @app.route('/books/new', methods = ['GET', 'POST'])
 def newBook():
-	output = ''
-	output += 'Page for adding a new book'
-	return output
+	if request.method == 'POST':
+		newBook = Book(title = request.form['title'],
+			author = request.form['author'],
+			subject = request.form['subject'],
+			category = request.form['category'],
+			summary = request.form['summary'])
+		session.add(newBook)
+		session.commit()
+		return redirect(url_for('bookList'))
+	else:
+		return render_template('newBook.html')
+
+
 
 # Route for editing book information
 @app.route('/books/<int:book_id>/edit', methods = ['GET', 'POST'])
@@ -65,6 +78,14 @@ def deleteBook(book_id):
 	output = ''
 	output += 'Page for deleting ' + str(deleteBook.title)
 	return output
+
+@app.route('/login')
+def login():
+	output = ''
+	output += 'Page for logging in throught website'
+	return output
+
+
 
 	
 

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Information about certain Books</title>
+</head>
+<body>
+	<h1>{{book.title}}</h1>
+
+	<a href="{{url_for('bookList')}}">Book List</a>
+	<br>
+	<a href='{{url_for('editBook', book_id = book.id) }}'>Edit Book</a>
+	<br>
+	<p>Author: {{book.author}}
+	<br>
+	Subject: {{book.subject}}
+	<br>
+	Category: {{book.category}}
+	<br>
+	Summary: {{book.summary}}
+	</p>
+
+</body>
+</html>

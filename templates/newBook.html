@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Add New Books to the Web App</title>
+	</head>
+	<body>
+		<h1>New Book</h1>
+
+		<form action='{{ url_for('newBook')}}' method='post'>
+
+			<p>Title:</p>
+			<input type="text" size="100" name="title">
+			<br>
+			<p>Author:</p>
+			<input type="text" size="100" name="author">
+			<br>
+			<p>Subject:</p>
+			<input type="text" size="100" name="subject">
+			<br>
+			<p>Category</p>
+			<input type="text" size="100" name="category">
+			<br>
+			<p>Summary</p>
+			<input type="text" size="400" name="summary">
+
+			<input type="submit" value="Add">
+		</form>
+	</body>
+	</html>

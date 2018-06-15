@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Page to edit a Book</title>
+</head>
+<body>
+	<h1>Edit Book</h1>
+
+	<form action="{{url_for('editBook', book_id = book_id)}}" method="POST">
+			<p>Title:
+		<br>
+			<input type="text" name="title" placeholder="{{editBook.title}}">
+		<br>
+		<br>
+			Author:
+		<br>
+			<input type="text" name="author" placeholder="{{editBook.author}}">
+		<br>
+		<br>
+			Subject:
+		<br>
+			<input type="text" name="subject" placeholder="{{editBook.subject}}">
+		<br>
+		<br>
+			Category:
+		<br>
+			<input type="text" name="category" placeholder="{{editBook.category}}">
+		<br>
+		<br>
+			Summary:
+		<br>
+
+			<input type="text" name="summary" size="200" placeholder="{{editBook.summary}}">
+		<br>
+		<br>
+			<input type='submit' value="Edit">
+
+
+<a href="{{url_for('bookInformation', book_id = book_id)}}">Cancel</a>
+</p>
+</form>
+
+</body>
+</html>

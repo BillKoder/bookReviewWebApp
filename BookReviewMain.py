@@ -65,10 +65,13 @@ def editBook(book_id):
 # Route for deleting book information
 @app.route('/books/<int:book_id>/delete', methods = ['GET', 'POST'])
 def deleteBook(book_id):
-	deleteBook = session.query(Book).filter_by(id = book_id).one()
-	output = ''
-	output += 'Page for deleting ' + str(deleteBook.title)
-	return output
+	bookToDelete = session.query(Book).filter_by(id = book_id).one()
+	if request.method == 'POST':
+		session.delete(bookToDelete)
+		session.commit()
+		return redirect(url_for('bookList'))
+	else:
+		return render_template('deleteBook.html', bookToDelete = bookToDelete)
 
 @app.route('/login')
 def login():

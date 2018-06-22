@@ -11,6 +11,8 @@ class User(Base):
 	__tablename__ = 'user'
 	id = Column(Integer, primary_key = True)
 	name = Column(String(80), nullable = False)
+	email = Column(String(250), nullable = False)
+	picture= Column(String(250))
 
 class Book(Base):
 	__tablename__ = 'book'
@@ -20,6 +22,8 @@ class Book(Base):
 	subject = Column(String(120))
 	category = Column(String(80))
 	summary = Column(String(400))
+	user_id = Column(Integer,ForeignKey('user.id'))
+	user = relationship(User)
 
 	@property
 	def serialize(self):

@@ -24,7 +24,7 @@ X	e: page to look at a specific book with details and buttons to make as read, r
 X	f: page to signin to user information
 	g: page for forum
 	h: page to set time to read book and discuss with others
-Step 4: Set CRUD function for books
+X Step 4: Set CRUD function for books
 Step 5: Set up user signin and authorization
 	- Both sign-in though website, facebook, and google
 Step 6: Use Amazon API to allow users to buy book

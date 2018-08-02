@@ -38,6 +38,8 @@ def bookInformation(book_id):
 # Route for adding a new book
 @app.route('/books/new', methods = ['GET', 'POST'])
 def newBook():
+	if 'username' not in login_session:
+		return redirect('/login')
 	if request.method == 'POST':
 		newBook = Book(title = request.form['title'],
 			author = request.form['author'],
@@ -56,6 +58,8 @@ def newBook():
 # Route for editing book information
 @app.route('/books/<int:book_id>/edit', methods = ['GET', 'POST'])
 def editBook(book_id):
+	if 'username' not in login_session:
+		return redirect('/login')
 	editBook = session.query(Book).filter_by(id = book_id).one()
 	if request.method == 'POST':
 		if request.form['title']:
@@ -77,6 +81,8 @@ def editBook(book_id):
 # Route for deleting book information
 @app.route('/books/<int:book_id>/delete', methods = ['GET', 'POST'])
 def deleteBook(book_id):
+	if 'username' not in login_session:
+		return redirect('/login')
 	bookToDelete = session.query(Book).filter_by(id = book_id).one()
 	if request.method == 'POST':
 		session.delete(bookToDelete)

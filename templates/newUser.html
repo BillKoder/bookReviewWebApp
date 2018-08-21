@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Create New User</title>
+</head>
+<body>
+	<h1>New user</h1>
+
+	<form action='{{url_for('newUser')}}' method = 'post'>
+		<p>Email:
+		<br>
+		<input type="text" name="email">
+		<br>
+		Password:
+		<br>
+		<input type="text" name="password">
+		<br>
+		Confirm Password:
+		<br>
+		<input type="text" name="passwordConfirm">
+		</p>
+		<input type="submit" name="create" value="Create">
+	</form>
+
+</body>
+</html>

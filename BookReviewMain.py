@@ -10,6 +10,12 @@ import httplib2
 import json
 from flask import make_response
 import requests
+# mail sending function
+#import smtplib
+# email modules
+#from email.mime.text import MIMEText
+from flask_mail import Mail, Message
+#from app import mail
 
 CLIENT_ID = json.loads(open('client_secrets.json', 'r').read())['web']['client_id']
 
@@ -33,7 +39,8 @@ def bookList():
 @app.route('/books/<int:book_id>/')
 def bookInformation(book_id):
 	book = session.query(Book).filter_by(id = book_id).one()
-	return render_template('bookinfo.html', book = book)
+	creator = getUserInfo(book.user_id)
+	return render_template('bookinfo.html', book = book, creator = creator)
 
 # Route for adding a new book
 @app.route('/books/new', methods = ['GET', 'POST'])
@@ -202,6 +209,38 @@ def gdisconnect():
 		response = make_response(json.dumps('Failed to revoke token for given user.'), 400)
 		response.headers['Content-Type'] = 'application.json'
 		return response
+
+
+@app.route('/login/newUser', methods = ['GET', 'POST'])
+def newUser():
+	state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(8))
+	login_session['state'] = state
+	print state
+	if request.method == 'POST':
+		email = request.form['email']
+		password = request.form['password']
+		passwordConfirm = request.form['passwordConfirm']
+		sender = "billfk1989@gmail.com"
+		text = "This is a test"
+		subject = "Test"
+		print password
+		print "2 password: %s" % passwordConfirm
+		if password == passwordConfirm:
+			print "Password check passed"
+			app.config['MAIL_SERVER'] = "smtp.gmail.com"
+			app.config['MAIL_PORT'] = 465
+			app.config['MAIL_USERNAME'] = 'billfk1989@gmail.com'
+			app.config['MAIL_PASSWORD'] = '9223Tutwiler'
+			app.config['MAIL_USE_TLS'] = False
+			app.config['MAIL_USE_SSL'] = True
+			mail = Mail(app)
+			msg = Message(subject, sender = sender, recipients = [email])
+			msg.body = "Your authorization code is: %s" % state
+			mail.send(msg)
+			print 'Email Sent'
+			return redirect(url_for('bookList'))
+	else:
+		return render_template('newUser.html')
 
 # Return a ID if the email belongs to a user
 def getUserID(email):

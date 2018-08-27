@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>New User Authentication</title>
+</head>
+<body>
+	<h1>New User Authentication</h1>
+
+	<form action = '{{url_for('newUserAuth')}}' method="post">
+		<p>Enter in Authorization Code:</p>
+		<input type = "text" size = "8" name = "authCode">
+		<br>
+		<input type = "submit" value="Enter">
+	</form>
+</body>
+</html>

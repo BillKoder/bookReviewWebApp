@@ -2,25 +2,40 @@
 <html>
 <head>
 	<title>Create New User</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
 	<h1>New user</h1>
 
 	<form action='{{url_for('newUser')}}' method = 'post'>
-		<p>Email:
+		<p>Email: <input type="email" name="email">
 		<br>
-		<input type="text" name="email">
+		Password: <input type="password" name="password">
 		<br>
-		Password:
+		Confirm Password: <input type="password" name="passwordConfirm">
 		<br>
-		<input type="text" name="password">
+		Username: <input type="text" name="Username">
 		<br>
-		Confirm Password:
-		<br>
-		<input type="text" name="passwordConfirm">
+		Picture: <input type="file" name="picture" id="pictureFile">
+		<button type="button" id = "buttonReset" onclick="resetFile($('#pictureFile'))">Reset file</button>
+
 		</p>
 		<input type="submit" name="create" value="Create">
-	</form>
 
+	</form>
+<script src="../static/clearImage.js" type="text/javascript "></script>
+<!--
+<script>
+$(function(){
+      
+window.resetFile = function (e) {
+    e.wrap('<form>').closest('form').get(0).reset();
+    e.unwrap();
+}
+
+    });
+</script>
+-->
 </body>
+
 </html>

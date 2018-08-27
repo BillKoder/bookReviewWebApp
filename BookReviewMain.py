@@ -220,6 +220,8 @@ def newUser():
 		email = request.form['email']
 		password = request.form['password']
 		passwordConfirm = request.form['passwordConfirm']
+		username = request.form['username']
+		picture = request.form['picture']
 		sender = "billfk1989@gmail.com"
 		text = "This is a test"
 		subject = "Test"
@@ -238,9 +240,43 @@ def newUser():
 			msg.body = "Your authorization code is: %s" % state
 			mail.send(msg)
 			print 'Email Sent'
-			return redirect(url_for('bookList'))
+			login_session['email'] = email
+			login_session['username'] = username
+			login_session['picture'] = picture
+			return redirect(url_for('newUserAuth'))
 	else:
 		return render_template('newUser.html')
+
+@app.route('/login/newUserAuth', methods = ['GET', 'POST'])
+def newUserAuth():
+	if request.method == 'POST':
+		if login_session['state'] == request.form['authCode']:
+			user_id = getUserID(login_session['email'])
+			if not user_id:
+				user_id = createUser(login_session)
+			login_session['user_id'] = user_id
+			return redirect(url_for('bookList'))
+		else:
+			return "Wrong Authorization Code"
+	else:
+		return render_template('newUserAuth.html')
+
+@app.route('/disconnect')
+def disconnect():
+	if login_session['state'] is None:
+		print 'Login State is None'
+		response = make_response(json.dumps('Current user not connected.'), 401)
+		response.headers['Content-Type'] = 'application/json'
+		return response
+	print 'User email is: '
+	print login_session['email']
+	#del login_session['username']
+	del login_session['email']
+	#del login_session['picture']
+	response = make_response(json.dumps('Successfully disconnected.'), 200)
+	response.headers['Content-Type'] = 'application/json'
+	return response
+
 
 # Return a ID if the email belongs to a user
 def getUserID(email):
@@ -252,8 +288,11 @@ def getUserID(email):
 
 # Returns a user object associated with this ID
 def getUserInfo(user_id):
-	user = session.query(User).filter_by(id = user_id).one()
-	return user
+	try:
+		user = session.query(User).filter_by(id = user_id).one()
+		return user
+	except:
+		return None
 
 #Create a new user in database
 def createUser(login_session):

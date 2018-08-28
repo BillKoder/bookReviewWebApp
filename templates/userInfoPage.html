@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>User Profile Page</title>
+</head>
+<body>
+	<h1>{{user.name}}</h1>
+
+	<a href="{{url_for('bookList')}}">Book List</a>
+	<br>
+	<p>Email: {{user.email}}
+	<br>
+	<img src="{{user.picture}}" alt="Profile Picture">
+	<br>
+</p>
+</body>
+</html>

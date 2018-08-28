@@ -277,18 +277,27 @@ def disconnect():
 	response.headers['Content-Type'] = 'application/json'
 	return response
 
-@app.route('/signin', methods = ['POST'])
+@app.route('/signin', methods = ['GET', 'POST'])
 def userSignin():
 	if request.method == 'POST':
 		email = request.form['email']
 		password = request.form['password']
 		user_id = getUserID(email)
+		user = getUserInfo(user_id)
 		if not user_id:
 			return "User not Found."
 		login_session['user_id'] = user_id
-		return redirect(url_for('bookList'))
+		login_session['username'] = user.name
+		return redirect(url_for('userPage', user_id = user_id))
 	else:
 		return render_template('userSignin.html')
+
+@app.route('/userPage/<int:user_id>/', methods = ['GET', 'POST'])
+def userPage(user_id):
+	if 'username' not in login_session:
+		return redirect('/login')
+	user = getUserInfo(user_id)
+	return render_template('userInfoPage.html', user = user)
 
 # Return a ID if the email belongs to a user
 def getUserID(email):

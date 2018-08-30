@@ -40,7 +40,13 @@ def bookList():
 def bookInformation(book_id):
 	book = session.query(Book).filter_by(id = book_id).one()
 	creator = getUserInfo(book.user_id)
-	return render_template('bookinfo.html', book = book, creator = creator)
+	bookSearch = book.title
+	print bookSearch
+	bookSearch = bookSearch.replace(" ", "+")
+	print bookSearch
+	url = "http://www.amazon.com/s?index=books&field-title=" + bookSearch
+	print url
+	return render_template('bookinfo.html', book = book, creator = creator, url = url)
 
 # Route for adding a new book
 @app.route('/books/new', methods = ['GET', 'POST'])

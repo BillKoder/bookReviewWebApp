@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Forums Main Page</title>
+</head>
+<body>
+	<h1>Forums</h1>
+	<h2>
+		<a href="{{url_for('login')}}">Login</a>
+		<br>
+		<a href = '{{url_for('bookList')}}'>Book List</a>
+	</h2>
+<form action="{{url_for('forumList')}}" method="post">
+	<p>
+		New Forum: <input type="text" name="newForum">
+		<input type="submit" name="subimt">
+	</p>
+</form>
+
+
+	{% for forum in forums %}
+	<h3>
+	<a href='{{url_for('forum', forum_id = forum.id) }}'>Forum</a>
+	{{forum.title}}
+	</h3>
+	{% endfor %}
+	
+</body>
+</html>

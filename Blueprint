@@ -27,17 +27,17 @@ X	f: page to signin to user information
 X Step 4: Set CRUD function for books
 X Step 5: Set up user signin and authorization
 	- Both sign-in though website, facebook, and google
-Step 6: Use Amazon API to allow users to buy book
+X Step 6: Use Amazon API to allow users to buy book
 Step 7: Make a forum
 Step 8: Make "Book Club" function
 
 
 Manual User signin:
-	1. Add Existing user signin button
+	X 1. Add Existing user signin button
 	2. Add User page, where the user will be sent once they are logged in, that shows:
-		a. Username
-		b. Picture
-		c. Email
+		X a. Username
+		X b. Picture
+		X c. Email
 		d. Lists Books Created
 Add Book Covers to Book database
 Add Password to User database

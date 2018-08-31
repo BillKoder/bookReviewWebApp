@@ -5,7 +5,7 @@
 </head>
 <body>
 	<h1>Forum</h1>
-	<form action="{{url_for('forum')}}" method="post">
+	<form action="{{url_for('forum', forum_id = forum.id)}}" method="post">
 		<input type="text" name="content" id="content">
 		<input type="submit" name="submit">
 		<br>

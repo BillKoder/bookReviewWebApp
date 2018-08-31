@@ -1,9 +1,9 @@
 from flask import Flask, render_template, url_for, request, redirect, flash, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from BookReviewDatabase import Base, User, Book
+from BookReviewDatabase import Base, User, Book, Forum
 from flask import session as login_session
-import random, string
+import random, string, datetime
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 import httplib2
@@ -304,6 +304,18 @@ def userPage(user_id):
 		return redirect('/login')
 	user = getUserInfo(user_id)
 	return render_template('userInfoPage.html', user = user)
+
+@app.route('/forum', methods = ['GET', 'POST'])
+def forum():
+	forumPosts = session.query(Forum)
+	if request.method == 'POST':
+		newPost = Forum(content =request.form['content'],
+			time = datetime.datetime.now().strftime("%c"))
+		#user_id = login_session['user_id'])
+		session.add(newPost)
+		session.commit()
+	return render_template('forum.html', forumPosts = forumPosts)
+
 
 # Return a ID if the email belongs to a user
 def getUserID(email):

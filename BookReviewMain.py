@@ -1,7 +1,7 @@
 from flask import Flask, render_template, url_for, request, redirect, flash, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from BookReviewDatabase import Base, User, Book, Forum
+from BookReviewDatabase import Base, User, Book, Forum, ForumContent
 from flask import session as login_session
 import random, string, datetime
 from oauth2client.client import flow_from_clientsecrets
@@ -305,16 +305,31 @@ def userPage(user_id):
 	user = getUserInfo(user_id)
 	return render_template('userInfoPage.html', user = user)
 
-@app.route('/forum', methods = ['GET', 'POST'])
-def forum():
-	forumPosts = session.query(Forum)
+@app.route('/forumList/', methods = ['GET', 'POST'])
+def forumList():
+	forums = session.query(Forum)
 	if request.method == 'POST':
-		newPost = Forum(content =request.form['content'],
-			time = datetime.datetime.now().strftime("%c"))
+		forumSuggestion = request.form['newForum']
+		newForum = Forum(title = forumSuggestion)
+			#user_id = login_session['user_id'])
+		session.add(newForum)
+		session.commit()
+	return render_template('forumList.html', forums = forums)
+
+
+
+@app.route('/forums/<int:forum_id>/', methods = ['GET', 'POST'])
+def forum(forum_id):
+	forum = session.query(Forum).filter_by(id = forum_id).one()
+	forumPosts = session.query(ForumContent).filter_by(forum_id = forum.id)
+	if request.method == 'POST':
+		newPost = ForumContent(content =request.form['content'],
+			time = datetime.datetime.now().strftime("%c"),
+			forum_id = forum_id)
 		#user_id = login_session['user_id'])
 		session.add(newPost)
 		session.commit()
-	return render_template('forum.html', forumPosts = forumPosts)
+	return render_template('forum.html', forum = forum, forumPosts = forumPosts)
 
 
 # Return a ID if the email belongs to a user

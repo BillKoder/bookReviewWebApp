@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
+from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -26,12 +26,20 @@ class Book(Base):
 class Forum(Base):
 	__tablename__ = 'forum'
 	id = Column(Integer, primary_key = True)
-	content = Column(String)
-	time = Column(String)
-	user_id = Column(Integer, ForeignKey('user.id'))
-	user = relationship(User)
+	title = Column(String)
 	book_id = Column(Integer, ForeignKey('book.id'))
 	book = relationship(Book)
+
+class ForumContent(Base):
+	__tablename__ = 'ForumContent'
+	id = Column(Integer, primary_key =True)
+	content = Column(String)
+	time = Column(String)
+	forum_id = Column(Integer, ForeignKey('forum.id'))
+	user_id = Column(Integer, ForeignKey('user.id'))
+	user = relationship(User)
+
+
 
 	@property
 	def serialize(self):

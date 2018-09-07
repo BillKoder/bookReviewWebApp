@@ -1,7 +1,7 @@
 from flask import Flask, render_template, url_for, request, redirect, flash, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from BookReviewDatabase import Base, User, Book, Forum, ForumContent
+from BookReviewDatabase import Base, User, Book, Forum, ForumContent, BookForumConnect
 from flask import session as login_session
 import random, string, datetime
 from oauth2client.client import flow_from_clientsecrets
@@ -308,18 +308,41 @@ def userPage(user_id):
 @app.route('/forumList/', methods = ['GET', 'POST'])
 def forumList():
 	forums = session.query(Forum)
+	books = session.query(Book)
 	if request.method == 'POST':
-		forumSuggestion = request.form['newForum']
-		newForum = Forum(title = forumSuggestion)
+		forumSuggestionTitle = request.form['newForum']
+		print "name"
+		forumSuggestion_book_id = request.form.getlist('books')
+		print "book"
+		inUse = False
+		print "Name: " 
+		print forumSuggestionTitle
+		print "Books: "
+		for x in forumSuggestion_book_id:
+			print x
+		for forum in forums:
+			if forumSuggestionTitle == forum.title:
+				inUse = True
+		if inUse == True:
+			print "Name already in use"
+		if inUse == False:
+			newForum = Forum(title = forumSuggestionTitle)
 			#user_id = login_session['user_id'])
-		session.add(newForum)
-		session.commit()
-	return render_template('forumList.html', forums = forums)
-
-
+			session.add(newForum)
+			session.commit()
+			print "NewForum.id: "
+			print newForum.id
+			print "Connections: "
+			for x in forumSuggestion_book_id:
+				print newForum.id
+				print x
+				newBookForumConnect = BookForumConnect(book_id = x, forum_id = newForum.id)
+				session.add(newBookForumConnect)
+				session.commit()
+	return render_template('forumList.html', forums = forums, books = books)
 
 @app.route('/forums/<int:forum_id>/', methods = ['GET', 'POST'])
-def forum(forum_id):
+def forum(forum_id, book_id = None):
 	forum = session.query(Forum).filter_by(id = forum_id).one()
 	forumPosts = session.query(ForumContent).filter_by(forum_id = forum.id)
 	if request.method == 'POST':
@@ -330,6 +353,19 @@ def forum(forum_id):
 		session.add(newPost)
 		session.commit()
 	return render_template('forum.html', forum = forum, forumPosts = forumPosts)
+
+@app.route('/forums/<int:forum_id>/delete', methods = ['GET', 'POST'])
+def deleteForum(forum_id):
+	#if 'username' not in login_session:
+	#	return redirect('/login')
+	forumToDelete = session.query(Forum).filter_by(id = forum_id).one()
+	if request.method == 'POST':
+		session.delete(forumToDelete)
+		session.commit()
+		return redirect(url_for('forumList'))
+	else:
+		return render_template('deleteForum.html', forumToDelete = forumToDelete)
+
 
 
 # Return a ID if the email belongs to a user

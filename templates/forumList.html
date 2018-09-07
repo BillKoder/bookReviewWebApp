@@ -13,6 +13,12 @@
 <form action="{{url_for('forumList')}}" method="post">
 	<p>
 		New Forum: <input type="text" name="newForum">
+		<br>
+		Book:
+		<br>
+		{% for book in books %}
+		 <input type="checkbox" name = "books" value="{{book.id}}">{{book.title}}<br>
+		{% endfor %}
 		<input type="submit" name="subimt">
 	</p>
 </form>
@@ -20,8 +26,11 @@
 
 	{% for forum in forums %}
 	<h3>
-	<a href='{{url_for('forum', forum_id = forum.id) }}'>Forum</a>
-	{{forum.title}}
+	<a href='{{url_for('forum', forum_id = forum.id) }}'>{{forum.title}}</a>
+	
+	<br>
+	<a href='{{url_for('deleteForum', forum_id = forum.id) }}'>Delete</a>
+	<br>
 	</h3>
 	{% endfor %}
 	

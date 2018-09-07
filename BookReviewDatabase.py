@@ -27,8 +27,7 @@ class Forum(Base):
 	__tablename__ = 'forum'
 	id = Column(Integer, primary_key = True)
 	title = Column(String)
-	book_id = Column(Integer, ForeignKey('book.id'))
-	book = relationship(Book)
+
 
 class ForumContent(Base):
 	__tablename__ = 'ForumContent'
@@ -39,7 +38,13 @@ class ForumContent(Base):
 	user_id = Column(Integer, ForeignKey('user.id'))
 	user = relationship(User)
 
-
+class BookForumConnect(Base):
+	__tablename__ = 'BookForumConect'
+	id = Column(Integer, primary_key = True)
+	book_id = Column(Integer, ForeignKey('book.id'))
+	forum_id = Column(Integer, ForeignKey('forum.id'))
+	book = relationship(Book)
+	forum = relationship(Forum)
 
 	@property
 	def serialize(self):

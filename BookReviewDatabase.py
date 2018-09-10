@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -10,7 +10,8 @@ class User(Base):
 	id = Column(Integer, primary_key = True)
 	name = Column(String(80), nullable = False)
 	email = Column(String(250))
-	picture= Column(String(250))
+	picture = Column(String)
+	password = Column(String)
 
 class Book(Base):
 	__tablename__ = 'book'
@@ -20,6 +21,7 @@ class Book(Base):
 	subject = Column(String(120))
 	category = Column(String(80))
 	summary = Column(String(400))
+	picture = Column(String)
 	user_id = Column(Integer,ForeignKey('user.id'))
 	user = relationship(User)
 
@@ -33,7 +35,7 @@ class ForumContent(Base):
 	__tablename__ = 'ForumContent'
 	id = Column(Integer, primary_key =True)
 	content = Column(String)
-	time = Column(String)
+	time = Column(DateTime)
 	forum_id = Column(Integer, ForeignKey('forum.id'))
 	user_id = Column(Integer, ForeignKey('user.id'))
 	user = relationship(User)

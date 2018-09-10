@@ -14,7 +14,7 @@
 		<br>
 		Confirm Password: <input type="password" name="passwordConfirm">
 		<br>
-		Username: <input type="text" name="Username">
+		Username: <input type="text" name="username">
 		<br>
 		Picture: <input type="file" name="picture" id="pictureFile">
 		<button type="button" id = "buttonReset" onclick="resetFile($('#pictureFile'))">Clear Picture</button>
@@ -24,18 +24,7 @@
 
 	</form>
 <script src="../static/clearImage.js" type="text/javascript "></script>
-<!--
-<script>
-$(function(){
-      
-window.resetFile = function (e) {
-    e.wrap('<form>').closest('form').get(0).reset();
-    e.unwrap();
-}
 
-    });
-</script>
--->
 </body>
 
 </html>

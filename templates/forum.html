@@ -11,10 +11,14 @@
 		<br>
 		{% for forumPost in forumPosts %}
 		{{forumPost.content}}
-		{{forumPost.time}}
+		{{forumPost.time.strftime("%Y-%m-%d %H:%M:%S")}}
 		<br>
 		{% endfor %}
 	</form>
 	<a href="{{url_for('forumList')}}">Forum List</a>
 </body>
 </html>
+
+<!--
+			
+-->

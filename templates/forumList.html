@@ -25,13 +25,20 @@
 
 
 	{% for forum in forums %}
-	<h3>
+	<p>
 	<a href='{{url_for('forum', forum_id = forum.id) }}'>{{forum.title}}</a>
 	
 	<br>
 	<a href='{{url_for('deleteForum', forum_id = forum.id) }}'>Delete</a>
 	<br>
-	</h3>
+	</p>
+	{% endfor %}
+
+	<h3>Books:</h3>
+	{% for book in books %}
+	{{book.title}}:
+	
+	<br>
 	{% endfor %}
 	
 </body>

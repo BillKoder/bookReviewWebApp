@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Information about certain Books</title>
+	<title>{{book.title}} Information</title>
 </head>
 <body>
 	<h1>{{book.title}}</h1>
@@ -10,16 +10,21 @@
 	<br>
 	<a href='{{url_for('editBook', book_id = book.id) }}'>Edit Book</a>
 	<br>
-	<p>Author: {{book.author}}
-	<br>
-	Subject: {{book.subject}}
-	<br>
-	Category: {{book.category}}
-	<br>
-	Summary: {{book.summary}}
+	<p>
+		<img src="{{book.picture}}" style="width:200px;height:275px; ">
+			
+		<br>
+		Author: {{book.author}}
+		<br>
+		Subject: {{book.subject}}
+		<br>
+		Category: {{book.category}}
+		<br>
+		Summary: {{book.summary}}
 	</p>
 	<br>
 	<a href="{{url}}">Buy Book</a>
+	<br>
 
 </body>
 </html>

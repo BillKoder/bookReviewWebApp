@@ -51,14 +51,15 @@ def bookInformation(book_id):
 # Route for adding a new book
 @app.route('/books/new', methods = ['GET', 'POST'])
 def newBook():
-	if 'username' not in login_session:
-		return redirect('/login')
+	#if 'username' not in login_session:
+	#	return redirect('/login')
 	if request.method == 'POST':
 		newBook = Book(title = request.form['title'],
 			author = request.form['author'],
 			subject = request.form['subject'],
 			category = request.form['category'],
-			summary = request.form['summary'])
+			summary = request.form['summary'],
+			picture = request.form['picture'])
 			#user_id = login_session['user_id'])
 		session.add(newBook)
 		session.commit()
@@ -71,8 +72,8 @@ def newBook():
 # Route for editing book information
 @app.route('/books/<int:book_id>/edit', methods = ['GET', 'POST'])
 def editBook(book_id):
-	if 'username' not in login_session:
-		return redirect('/login')
+	#if 'username' not in login_session:
+	#	return redirect('/login')
 	editBook = session.query(Book).filter_by(id = book_id).one()
 	if request.method == 'POST':
 		if request.form['title']:
@@ -85,6 +86,8 @@ def editBook(book_id):
 			editBook.category = request.form['category']
 		if request.form['summary']:
 			editBook.summary = request.form['summary']
+		if request.form['picture']:
+			editBook.picture = request.form['picture']
 		session.add(editBook)
 		session.commit()
 		return redirect(url_for('bookInformation', book_id = book_id))
@@ -249,6 +252,7 @@ def newUser():
 			login_session['email'] = email
 			login_session['username'] = username
 			login_session['picture'] = picture
+			login_session['password'] = password
 			return redirect(url_for('newUserAuth'))
 	else:
 		return render_template('newUser.html')
@@ -277,8 +281,9 @@ def disconnect():
 	print 'User email is: '
 	print login_session['email']
 	#del login_session['username']
-	del login_session['email']
+	#del login_session['email']
 	#del login_session['picture']
+	#del login_session['password']
 	response = make_response(json.dumps('Successfully disconnected.'), 200)
 	response.headers['Content-Type'] = 'application/json'
 	return response
@@ -292,9 +297,12 @@ def userSignin():
 		user = getUserInfo(user_id)
 		if not user_id:
 			return "User not Found."
-		login_session['user_id'] = user_id
-		login_session['username'] = user.name
-		return redirect(url_for('userPage', user_id = user_id))
+		if password == user.password:
+			login_session['user_id'] = user_id
+			login_session['username'] = user.name
+			return redirect(url_for('userPage', user_id = user_id))
+		else:
+			return "Incorrect Password"
 	else:
 		return render_template('userSignin.html')
 
@@ -311,13 +319,8 @@ def forumList():
 	books = session.query(Book)
 	if request.method == 'POST':
 		forumSuggestionTitle = request.form['newForum']
-		print "name"
 		forumSuggestion_book_id = request.form.getlist('books')
-		print "book"
 		inUse = False
-		print "Name: " 
-		print forumSuggestionTitle
-		print "Books: "
 		for x in forumSuggestion_book_id:
 			print x
 		for forum in forums:
@@ -330,12 +333,7 @@ def forumList():
 			#user_id = login_session['user_id'])
 			session.add(newForum)
 			session.commit()
-			print "NewForum.id: "
-			print newForum.id
-			print "Connections: "
 			for x in forumSuggestion_book_id:
-				print newForum.id
-				print x
 				newBookForumConnect = BookForumConnect(book_id = x, forum_id = newForum.id)
 				session.add(newBookForumConnect)
 				session.commit()
@@ -347,7 +345,7 @@ def forum(forum_id, book_id = None):
 	forumPosts = session.query(ForumContent).filter_by(forum_id = forum.id)
 	if request.method == 'POST':
 		newPost = ForumContent(content =request.form['content'],
-			time = datetime.datetime.now().strftime("%c"),
+			time = datetime.datetime.now(),
 			forum_id = forum_id)
 		#user_id = login_session['user_id'])
 		session.add(newPost)
@@ -388,7 +386,8 @@ def getUserInfo(user_id):
 def createUser(login_session):
 	newUser = User(name = login_session['username'],
 		email = login_session['email'],
-		picture = login_session['picture'])
+		picture = login_session['picture'],
+		password = login_session['password'])
 	session.add(newUser)
 	session.commit()
 	user = session.query(User).filter_by(email = login_session['email']).one()

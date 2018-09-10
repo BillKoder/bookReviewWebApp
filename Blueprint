@@ -22,7 +22,7 @@ X	c: page to edit book
 X	d: page to delete a book
 X	e: page to look at a specific book with details and buttons to make as read, rate, and buy
 X	f: page to signin to user information
-	g: page for forum
+X	g: page for forum
 	h: page to set time to read book and discuss with others
 X Step 4: Set CRUD function for books
 X Step 5: Set up user signin and authorization
@@ -39,5 +39,6 @@ Manual User signin:
 		X b. Picture
 		X c. Email
 		d. Lists Books Created
-Add Book Covers to Book database
-Add Password to User database
+X Add Book Covers to Book database
+X Add Password to User database
+Add List of forums the book is connected to on book's infomation page

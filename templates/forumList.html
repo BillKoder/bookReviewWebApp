@@ -36,7 +36,8 @@
 
 	<h3>Books:</h3>
 	{% for book in books %}
-	{{book.title}}:
+	<a href='{{url_for('bookForumList', book_id = book.id) }}'book.title</a>
+	{{book.title}}
 	
 	<br>
 	{% endfor %}

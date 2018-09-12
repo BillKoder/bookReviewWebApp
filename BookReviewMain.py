@@ -364,7 +364,11 @@ def deleteForum(forum_id):
 	else:
 		return render_template('deleteForum.html', forumToDelete = forumToDelete)
 
-
+@app.route('/forumList/<int:book_id>/', methods = ['GET', 'POST'])
+def bookForumList(book_id):
+	forums = session.query(Forum).join(BookForumConnect).filter(BookForumConnect.book_id == book_id)
+	book = session.query(Book).filter_by(id = book_id).one()
+	return render_template('bookForumList.html', forums = forums, book = book)
 
 # Return a ID if the email belongs to a user
 def getUserID(email):

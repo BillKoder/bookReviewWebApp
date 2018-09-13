@@ -51,16 +51,16 @@ def bookInformation(book_id):
 # Route for adding a new book
 @app.route('/books/new', methods = ['GET', 'POST'])
 def newBook():
-	#if 'username' not in login_session:
-	#	return redirect('/login')
+	if 'username' not in login_session:
+		return redirect('/login')
 	if request.method == 'POST':
 		newBook = Book(title = request.form['title'],
 			author = request.form['author'],
 			subject = request.form['subject'],
 			category = request.form['category'],
 			summary = request.form['summary'],
-			picture = request.form['picture'])
-			#user_id = login_session['user_id'])
+			picture = request.form['picture'],
+			user_id = login_session['user_id'])
 		session.add(newBook)
 		session.commit()
 		return redirect(url_for('bookList'))
@@ -72,8 +72,8 @@ def newBook():
 # Route for editing book information
 @app.route('/books/<int:book_id>/edit', methods = ['GET', 'POST'])
 def editBook(book_id):
-	#if 'username' not in login_session:
-	#	return redirect('/login')
+	if 'username' not in login_session:
+		return redirect('/login')
 	editBook = session.query(Book).filter_by(id = book_id).one()
 	if request.method == 'POST':
 		if request.form['title']:
@@ -279,11 +279,10 @@ def disconnect():
 		response.headers['Content-Type'] = 'application/json'
 		return response
 	print 'User email is: '
-	print login_session['email']
-	#del login_session['username']
-	#del login_session['email']
-	#del login_session['picture']
-	#del login_session['password']
+	print login_session.get('email')
+	del login_session['username']
+	del login_session['email']
+	del login_session['picture']
 	response = make_response(json.dumps('Successfully disconnected.'), 200)
 	response.headers['Content-Type'] = 'application/json'
 	return response
@@ -300,6 +299,8 @@ def userSignin():
 		if password == user.password:
 			login_session['user_id'] = user_id
 			login_session['username'] = user.name
+			login_session['email'] = user.email
+			login_session['picture'] = user.picture
 			return redirect(url_for('userPage', user_id = user_id))
 		else:
 			return "Incorrect Password"
@@ -313,8 +314,30 @@ def userPage(user_id):
 	user = getUserInfo(user_id)
 	return render_template('userInfoPage.html', user = user)
 
+@app.route('/userPage/<int:user_id>/edit', methods = ['GET', 'POST'])
+def editUser(user_id):
+	if 'username' not in login_session:
+		return redirect('/login')
+	editUser = session.query(User).filter_by(id = user_id).one()
+	if request.method == 'POST':
+		if request.form['name']:
+			editUser.name = request.form['name']
+		if request.form['email']:
+			editUser.email = request.form['email']
+		if request.form['password']:
+			editUser.subject = request.form['password']
+		if request.form['picture']:
+			editUser.category = request.form['picture']
+		session.add(editUser)
+		session.commit()
+		return redirect(url_for('userPage', user_id = user_id))
+	else:
+		return render_template('editUser.html', user_id = user_id, editUser = editUser)
+
 @app.route('/forumList/', methods = ['GET', 'POST'])
 def forumList():
+	if 'username' not in login_session:
+		return redirect('/login')
 	forums = session.query(Forum)
 	books = session.query(Book)
 	if request.method == 'POST':
@@ -341,6 +364,8 @@ def forumList():
 
 @app.route('/forums/<int:forum_id>/', methods = ['GET', 'POST'])
 def forum(forum_id, book_id = None):
+	if 'username' not in login_session:
+		return redirect('/login')
 	forum = session.query(Forum).filter_by(id = forum_id).one()
 	forumPosts = session.query(ForumContent).filter_by(forum_id = forum.id)
 	if request.method == 'POST':
@@ -354,8 +379,8 @@ def forum(forum_id, book_id = None):
 
 @app.route('/forums/<int:forum_id>/delete', methods = ['GET', 'POST'])
 def deleteForum(forum_id):
-	#if 'username' not in login_session:
-	#	return redirect('/login')
+	if 'username' not in login_session:
+		return redirect('/login')
 	forumToDelete = session.query(Forum).filter_by(id = forum_id).one()
 	if request.method == 'POST':
 		session.delete(forumToDelete)
@@ -366,6 +391,8 @@ def deleteForum(forum_id):
 
 @app.route('/forumList/<int:book_id>/', methods = ['GET', 'POST'])
 def bookForumList(book_id):
+	if 'username' not in login_session:
+		return redirect('/login')
 	forums = session.query(Forum).join(BookForumConnect).filter(BookForumConnect.book_id == book_id)
 	book = session.query(Book).filter_by(id = book_id).one()
 	return render_template('bookForumList.html', forums = forums, book = book)

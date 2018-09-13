@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Page to edit a User</title>
+</head>
+<body>
+	<h1>Edit User</h1>
+
+	<form action="{{url_for('editUser', user_id = user_id)}}" method="POST">
+			<p>Name:
+		<br>
+			<input type="text" name="name" placeholder="{{editUser.name}}">
+		<br>
+		<br>
+			Email:
+		<br>
+			<input type="text" name="email" placeholder="{{editUser.email}}">
+		<br>
+		<br>
+			Password:
+		<br>
+			<input type="text" name="password" placeholder="{{editUser.password}}">
+		<br>
+		<br>
+			Picture:
+		<br>
+			<input type="text" name="picture" placeholder="{{editUser.picture}}">
+		
+		<br>	
+		<br>
+			<input type='submit' value="Edit">
+
+
+<a href="{{url_for('userPage', user_id = user_id)}}">Cancel</a>
+</p>
+</form>
+
+</body>
+</html>

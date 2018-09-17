@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>Book Review Web App Main Page</title>
+	<link rel="stylesheet" type="text/css" href="/static/styles.css">
 </head>
 <body>
 	<h1>Books</h1>
@@ -12,6 +13,7 @@
 		<br>
 		<a href="{{url_for('forumList')}}">Forums</a>
 	</h2>
+	<h4> <a href="{{url_for('userPage', user_id = user_id)}}">User Page</a> </h4>
 
 
 

@@ -33,7 +33,8 @@ session = DBSession()
 @app.route('/books/')
 def bookList():
 	books = session.query(Book)
-	return render_template('bookList.html', books = books)
+	user_id = login_session['user_id']
+	return render_template('bookList.html', books = books, user_id = user_id)
 
 # Route for individual book information
 @app.route('/books/<int:book_id>/')
@@ -312,7 +313,11 @@ def userPage(user_id):
 	if 'username' not in login_session:
 		return redirect('/login')
 	user = getUserInfo(user_id)
-	return render_template('userInfoPage.html', user = user)
+	books = session.query(Book)
+	for book in books:
+		if book.user_id == user.id:
+			print book.title
+	return render_template('userInfoPage.html', user = user, books = books)
 
 @app.route('/userPage/<int:user_id>/edit', methods = ['GET', 'POST'])
 def editUser(user_id):
@@ -325,9 +330,9 @@ def editUser(user_id):
 		if request.form['email']:
 			editUser.email = request.form['email']
 		if request.form['password']:
-			editUser.subject = request.form['password']
+			editUser.password = request.form['password']
 		if request.form['picture']:
-			editUser.category = request.form['picture']
+			editUser.picture = request.form['picture']
 		session.add(editUser)
 		session.commit()
 		return redirect(url_for('userPage', user_id = user_id))

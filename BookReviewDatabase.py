@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, BLOB
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -10,7 +10,7 @@ class User(Base):
 	id = Column(Integer, primary_key = True)
 	name = Column(String(80), nullable = False)
 	email = Column(String(250))
-	picture = Column(String)
+	picture = Column(BLOB)
 	password = Column(String)
 
 class Book(Base):

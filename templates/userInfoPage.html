@@ -4,18 +4,26 @@
 	<title>User Profile Page</title>
 </head>
 <body>
+	<form action="" method="post" enctype="multipart/form-data">
+		
+	</form>
 	<h1>{{user.name}}</h1>
 
 	<a href="{{url_for('bookList')}}">Book List</a>
 	<br>
 	<p>Email: {{user.email}}
 	<br>
-	<object data="{{user.picture}}" style="width:150px;height:150px;">
-		<img src="https://i.stack.imgur.com/34AD2.jpg" style="width:150px;height:150px;" />
+		<object data="{{user.picture}}" style="width:150px;height:150px;" >
+		<img src="{{user.picture}}" style="width:150px;height:150px;" alt = "Profile picture" >
 	</object>
 	<br>
 	<a href='{{url_for('editUser', user_id = user.id) }}'>Edit User</a>
+
+	{% for book in books %}
+	{% if book.user_id == user.id %}
+	<a href='{{url_for('bookInformation', book_id = book.id) }}'book.title</a>
+	{% endif %}
+	{% endfor %}
 	</p>
-	
 </body>
 </html>

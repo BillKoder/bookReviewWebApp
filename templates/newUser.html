@@ -2,7 +2,6 @@
 <html>
 <head>
 	<title>Create New User</title>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
 	<h1>New user</h1>
@@ -16,14 +15,14 @@
 		<br>
 		Username: <input type="text" name="username">
 		<br>
-		Picture: <input type="file" name="picture" id="pictureFile">
-		<button type="button" id = "buttonReset" onclick="resetFile($('#pictureFile'))">Clear Picture</button>
+		Picture URL: <input type="text" name="picture">
+		(This needs to be a url for the picture you would like to be your profile picture.)
 
 		</p>
 		<input type="submit" name="create" value="Create">
+		<a href="{{url_for('bookList')}}">Cancel</a>
 
 	</form>
-<script src="../static/clearImage.js" type="text/javascript "></script>
 
 </body>
 

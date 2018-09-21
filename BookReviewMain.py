@@ -33,8 +33,11 @@ session = DBSession()
 @app.route('/books/')
 def bookList():
 	books = session.query(Book)
-	user_id = login_session['user_id']
-	return render_template('bookList.html', books = books, user_id = user_id)
+	if 'username' not in login_session:
+  		return render_template('publicBookList.html', books = books)
+  	else:
+  		user_id = login_session['user_id']
+		return render_template('bookList.html', books = books, user_id = user_id)
 
 # Route for individual book information
 @app.route('/books/<int:book_id>/')
@@ -373,14 +376,18 @@ def forum(forum_id, book_id = None):
 		return redirect('/login')
 	forum = session.query(Forum).filter_by(id = forum_id).one()
 	forumPosts = session.query(ForumContent).filter_by(forum_id = forum.id)
+	user_id = login_session['user_id']
+	#userName = session.query(User).filter_by(id = forumPost.user_id)
+	users = session.query(User)
+	name = ""
 	if request.method == 'POST':
 		newPost = ForumContent(content =request.form['content'],
 			time = datetime.datetime.now(),
-			forum_id = forum_id)
-		#user_id = login_session['user_id'])
+			forum_id = forum_id,
+			user_id = user_id)
 		session.add(newPost)
 		session.commit()
-	return render_template('forum.html', forum = forum, forumPosts = forumPosts)
+	return render_template('forum.html', forum = forum, forumPosts = forumPosts, users = users, name = name)
 
 @app.route('/forums/<int:forum_id>/delete', methods = ['GET', 'POST'])
 def deleteForum(forum_id):

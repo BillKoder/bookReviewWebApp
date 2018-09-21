@@ -1,1 +1,16 @@
-body {background-color: rgb(255, 238, 205)}
+body {
+	background-color: rgb(255, 238, 205);
+	text-align: center;
+}
+
+#forumContent {
+	margin: auto;
+	width: 500px;
+	border: 1px solid;
+	padding: 10px;
+	text-align: center;
+}
+
+#forumDateTime{
+	text-align: right;
+}

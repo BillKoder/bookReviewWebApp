@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Book Review Web App Main Page</title>
+	<link rel="stylesheet" type="text/css" href="/static/styles.css">
+</head>
+<body>
+	<h1>Books</h1>
+	<h2>
+		<a href="{{url_for('login')}}">Login</a>
+		<br>
+		<a href = '{{url_for('newBook')}}'>Add New Book</a>
+		<br>
+		<a href="{{url_for('forumList')}}">Forums</a>
+	</h2>
+
+
+	{% for book in books %}
+	<h3>
+	<a href='{{url_for('bookInformation', book_id = book.id) }}'book.title</a>
+	{{book.title}}
+	</h3>
+	<a href='{{url_for('editBook', book_id = book.id) }}'>Edit</a>
+	<br>
+	<a href='{{url_for('deleteBook', book_id = book.id) }}'>Delete</a>
+	<br>
+	<br>
+	{% endfor %}
+	
+</body>
+</html>

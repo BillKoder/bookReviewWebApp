@@ -2,20 +2,27 @@
 <html>
 <head>
 	<title>Book Review Forum</title>
+	<link rel="stylesheet" type="text/css" href="/static/styles.css">
 </head>
 <body>
 	<h1>{{forum.title}}</h1>
+	<a href="{{url_for('forumList')}}">Forum List</a>
 	<form action="{{url_for('forum', forum_id = forum.id)}}" method="post">
-		<input type="text" name="content" id="content">
+		<textarea name="content" id="content" rows="10" cols="65"></textarea>
+		<br>
 		<input type="submit" name="submit">
 		<br>
 		{% for forumPost in forumPosts %}
+		<div id="forumContent">
 		{{forumPost.content}}
-		{{forumPost.time.strftime("%Y-%m-%d %H:%M:%S")}}
-		<br>
+		{% for user in users %}
+		{% if forumPost.user_id == user.id %}
+		<div id="forumDateTime">{{user.name}} <br>{{forumPost.time.strftime("%Y-%m-%d %H:%M:%S")}} </div>
+		{% endif %}
+		{% endfor %}
+		</div>
 		{% endfor %}
 	</form>
-	<a href="{{url_for('forumList')}}">Forum List</a>
 </body>
 </html>
 

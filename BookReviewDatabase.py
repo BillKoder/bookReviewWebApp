@@ -48,6 +48,15 @@ class BookForumConnect(Base):
 	book = relationship(Book)
 	forum = relationship(Forum)
 
+class UserForumContentConnect(Base):
+	__tablename__ = 'UserForumContentConnect'
+	id = Column(Integer, primary_key = True)
+	user_id = Column(Integer, ForeignKey('user.id'))
+	forumContent_id = Column(Integer, ForeignKey('ForumContent.id'))
+	user = relationship(User)
+	forumContent = relationship(ForumContent)
+
+
 	@property
 	def serialize(self):
 		# Returns object data in easily serializable format

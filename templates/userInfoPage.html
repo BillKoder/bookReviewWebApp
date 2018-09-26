@@ -9,7 +9,9 @@
 		
 	</form>
 	<h1>{{user.name}}</h1>
-
+	<a href="{{url_for('disconnect')}}">Log Out</a>
+	<br>
+	<br>
 	<a href="{{url_for('bookList')}}">Book List</a>
 	<br>
 	<p>Email: {{user.email}}
@@ -19,10 +21,12 @@
 	</object>
 	<br>
 	<a href='{{url_for('editUser', user_id = user.id) }}'>Edit User</a>
-
+	<br>
+	
+	<h4>Books Added:</h4>
 	{% for book in books %}
 	{% if book.user_id == user.id %}
-	<a href='{{url_for('bookInformation', book_id = book.id) }}'book.title</a>
+	<a href='{{url_for('bookInformation', book_id = book.id) }}'</a>{{book.title}}
 	{% endif %}
 	{% endfor %}
 	</p>

@@ -215,6 +215,7 @@ def gdisconnect():
 		del login_session['username']
 		del login_session['email']
 		del login_session['picture']
+		del login_session['provider']
 		response = make_response(json.dumps('Successfully disconnected.'), 200)
 		response.headers['Content-Type'] = 'application/json'
 		return response
@@ -282,6 +283,9 @@ def disconnect():
 		response = make_response(json.dumps('Current user not connected.'), 401)
 		response.headers['Content-Type'] = 'application/json'
 		return response
+	if 'provider' in login_session:
+		if login_session['provider'] == 'google':
+			return redirect(url_for('gdisconnect'))
 	print 'User email is: '
 	print login_session.get('email')
 	del login_session['username']

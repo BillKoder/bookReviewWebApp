@@ -8,6 +8,12 @@
 </head>
 
 <body>
+	<ul>
+		<li><a href="{{url_for('bookList')}}">Home</a></li>
+		<li><a href = '{{url_for('newBook')}}'>Add New Book</a></li>
+		<li><a href="{{url_for('forumList')}}">Forums</a></li>
+		<li><a href="{{url_for('login')}}" class="active">Login</a></li>
+	</ul>
 	<h2>
 		<a href='{{url_for('userSignin')}}'>Sign In</a>
 		<br>

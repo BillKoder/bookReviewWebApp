@@ -5,8 +5,13 @@
 	<link rel="stylesheet" type="text/css" href="/static/styles.css">
 </head>
 <body>
+	<ul>
+		<li><a href="{{url_for('bookList')}}">Home</a></li>
+		<li><a href = '{{url_for('newBook')}}'>Add New Book</a></li>
+		<li><a  href="{{url_for('forumList')}}" class="active">Forums</a></li>
+		<li><a href="{{url_for('userPage', user_id = user.id)}}">{{user.name}}</a></li>
+	</ul>
 	<h1>{{forum.title}}</h1>
-	<a href="{{url_for('forumList')}}">Forum List</a>
 	<form action="{{url_for('forum', forum_id = forum.id)}}" method="post">
 		<textarea name="content" id="content" rows="10" cols="65"></textarea>
 		<br>

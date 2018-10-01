@@ -5,6 +5,12 @@
 	<link rel="stylesheet" type="text/css" href="/static/styles.css">
 </head>
 <body>
+	<ul>
+		<li><a href="{{url_for('bookList')}}">Home</a></li>
+		<li><a href = '{{url_for('newBook')}}'>Add New Book</a></li>
+		<li><a href="{{url_for('forumList')}}">Forums</a></li>
+		<li><a href="{{url_for('login')}}" class="active">Login</a></li>
+	</ul>
 	<form action='{{url_for('userSignin')}}' method='post'>
 		<p>Email: <input type="email" name="email">
 		<br>

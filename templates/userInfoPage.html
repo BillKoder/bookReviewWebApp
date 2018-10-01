@@ -5,14 +5,15 @@
 	<link rel="stylesheet" type="text/css" href="/static/styles.css">
 </head>
 <body>
-	<form action="" method="post" enctype="multipart/form-data">
-		
-	</form>
+	<form action="" method="post" enctype="multipart/form-data"></form>
+	<ul>
+		<li><a href="{{url_for('bookList')}}">Home</a></li>
+		<li><a href = '{{url_for('newBook')}}'>Add New Book</a></li>
+		<li><a href="{{url_for('forumList')}}">Forums</a></li>
+		<li><a class="active" href="{{url_for('userPage', user_id = user.id)}}">{{user.name}}</a></li>
+	</ul>
 	<h1>{{user.name}}</h1>
 	<a href="{{url_for('disconnect')}}">Log Out</a>
-	<br>
-	<br>
-	<a href="{{url_for('bookList')}}">Book List</a>
 	<br>
 	<p>Email: {{user.email}}
 	<br>

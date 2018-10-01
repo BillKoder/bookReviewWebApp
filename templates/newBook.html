@@ -5,6 +5,12 @@
 	<link rel="stylesheet" type="text/css" href="/static/styles.css">
 	</head>
 	<body>
+		<ul>
+			<li><a href="{{url_for('bookList')}}">Home</a></li>
+			<li><a href = '{{url_for('newBook')}}' class="active">Add New Book</a></li>
+			<li><a href="{{url_for('forumList')}}">Forums</a></li>
+			<li><a href="{{url_for('userPage', user_id = user.id)}}">{{user.name}}</a></li>
+		</ul>
 		<h1>New Book</h1>
 
 		<form action='{{ url_for('newBook')}}' method='post'>
@@ -17,9 +23,6 @@
 			<br>
 			<p>Subject:</p>
 			<input type="text" size="100" name="subject">
-			<br>
-			<p>Category</p>
-			<input type="text" size="100" name="category">
 			<br>
 			<p>Summary</p>
 			<input type="text" size="100" name="summary">

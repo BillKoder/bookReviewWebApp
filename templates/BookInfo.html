@@ -5,11 +5,17 @@
 	<link rel="stylesheet" type="text/css" href="/static/styles.css">
 </head>
 <body>
+	<ul>
+		<li><a href="{{url_for('bookList')}}">Home</a></li>
+		<li><a href = '{{url_for('newBook')}}'>Add New Book</a></li>
+		<li><a href="{{url_for('forumList')}}">Forums</a></li>
+		<li style="float: right;"><a href="{{url_for('userPage', user_id = user.id)}}">{{user.name}}</a></li>
+	</ul>
 	<h1>{{book.title}}</h1>
 
-	<a href="{{url_for('bookList')}}">Book List</a>
-	<br>
 	<a href='{{url_for('editBook', book_id = book.id) }}'>Edit Book</a>
+	<br>
+	<a href="{{url_for('deleteBook', book_id = book.id)}}">Delete Book</a>
 	<br>
 	<p>
 		<img src="{{book.picture}}" style="width:200px;height:275px; ">
@@ -19,9 +25,9 @@
 		<br>
 		Subject: {{book.subject}}
 		<br>
-		Category: {{book.category}}
-		<br>
 		Summary: {{book.summary}}
+		<br>
+		Added by: {{creator.name}}
 	</p>
 	<br>
 	<a href="{{url}}">Buy Book</a>

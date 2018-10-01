@@ -29,6 +29,8 @@ class Forum(Base):
 	__tablename__ = 'forum'
 	id = Column(Integer, primary_key = True)
 	title = Column(String)
+	user_id = Column(Integer,ForeignKey('user.id'))
+	user = relationship(User)
 
 
 class ForumContent(Base):

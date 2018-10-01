@@ -5,17 +5,23 @@
 	<link rel="stylesheet" type="text/css" href="/static/styles.css">
 </head>
 <body>
+	<ul>
+		<li><a class="active" href="{{url_for('bookList')}}">Home</a></li>
+		<li><a href = '{{url_for('newBook')}}'>Add New Book</a></li>
+		<li><a href="{{url_for('forumList')}}">Forums</a></li>
+		<li><a href="{{url_for('userPage', user_id = user.id)}}">{{user.name}}</a></li>
+	</ul>
+
+{% with messages = get_flashed_messages() %}
+	{% if messages %}
+			{% for message in messages %}
+				<li><strong>{{message}}</strong></li>
+			{% endfor %}
+	{% endif %}
+	{% endwith %}
+	<br>
+	
 	<h1>Books</h1>
-	<h2>
-		<a href="{{url_for('login')}}">Login</a>
-		<br>
-		<a href = '{{url_for('newBook')}}'>Add New Book</a>
-		<br>
-		<a href="{{url_for('forumList')}}">Forums</a>
-	</h2>
-	<h4> <a href="{{url_for('userPage', user_id = user_id)}}">User Page</a> </h4>
-
-
 
 	{% for book in books %}
 	<h3>

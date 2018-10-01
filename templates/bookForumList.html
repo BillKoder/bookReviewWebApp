@@ -5,7 +5,12 @@
 	<link rel="stylesheet" type="text/css" href="/static/styles.css">
 </head>
 <body>
-	<a href="{{url_for('forumList')}}">Forums</a>
+	<ul>
+		<li><a class="active" href="{{url_for('bookList')}}">Home</a></li>
+		<li><a href = '{{url_for('newBook')}}'>Add New Book</a></li>
+		<li><a href="{{url_for('forumList')}}">Forums</a></li>
+		<li style="float: right;"><a href="{{url_for('userPage', user_id = user.id)}}">{{user.name}}</a></li>
+	</ul>	
 	<h1>{{book.title}}</h1>
 	{% for forum in forums %}
 	<p>

@@ -42,7 +42,6 @@ def bookList():
 # Route for individual book information
 @app.route('/books/<int:book_id>/')
 def bookInformation(book_id):
-	user = getUserInfo(login_session['user_id'])
 	book = session.query(Book).filter_by(id = book_id).one()
 	creator = getUserInfo(book.user_id)
 	bookSearch = book.title
@@ -50,13 +49,17 @@ def bookInformation(book_id):
 	bookSearch = bookSearch.replace(" ", "+")
 	print bookSearch
 	url = "http://www.amazon.com/s?index=books&field-title=" + bookSearch
-	print url
-	return render_template('bookinfo.html', book = book, creator = creator, url = url, user = user)
+	if 'username' in login_session:
+		user = getUserInfo(login_session['user_id'])
+		return render_template('bookinfo.html', book = book, creator = creator, url = url, user = user)
+	else:
+		return render_template('publicbookinfo.html', book = book, creator = creator, url = url)
 
 # Route for adding a new book
 @app.route('/books/new', methods = ['GET', 'POST'])
 def newBook():
 	if 'username' not in login_session:
+		flash("You must be logged in to access that page.")
 		return redirect('/login')
 	user = getUserInfo(login_session['user_id'])
 	if request.method == 'POST':
@@ -79,11 +82,13 @@ def newBook():
 @app.route('/books/<int:book_id>/edit', methods = ['GET', 'POST'])
 def editBook(book_id):
 	if 'username' not in login_session:
+		flash("You must be logged in to access that page.")
 		return redirect('/login')
 	user = getUserInfo(login_session['user_id'])
 	editBook = session.query(Book).filter_by(id = book_id).one()
 	if login_session['user_id'] != editBook.user_id:
-		return "Only user who added this book can edit it."
+		flash("Only user who added this book can edit it.")
+		return redirect(url_for('bookInformation', book_id = book_id))
 	if request.method == 'POST':
 		if request.form['title']:
 			editBook.title = request.form['title']
@@ -107,11 +112,13 @@ def editBook(book_id):
 @app.route('/books/<int:book_id>/delete', methods = ['GET', 'POST'])
 def deleteBook(book_id):
 	if 'username' not in login_session:
+		flash("You must be logged in to access that page.")
 		return redirect('/login')
 	user = getUserInfo(login_session['user_id'])
 	bookToDelete = session.query(Book).filter_by(id = book_id).one()
 	if login_session['user_id'] != bookToDelete.user_id:
-		return "Only user who added this book can delete it."
+		flash("Only user who added this book can delete it.")
+		return redirect(url_for('bookInformation', book_id = book_id))
 	if request.method == 'POST':
 		session.delete(bookToDelete)
 		session.commit()
@@ -240,6 +247,7 @@ def gdisconnect():
 def newUser():
 	state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(8))
 	login_session['state'] = state
+	users = session.query(User)
 	print state
 	if request.method == 'POST':
 		email = request.form['email']
@@ -250,6 +258,13 @@ def newUser():
 		sender = "billfk1989@gmail.com"
 		text = "This is your Authorization Code: "
 		subject = "Authorization Code"
+		for user in users:
+			if email == user.email:
+				flash("Email already in use, try a new email.")
+				return redirect(url_for("newUser"))
+			if username == user.name:
+				flash("Username already in use, try a different one.")
+				return redirect(url_for("newUser"))
 		print password
 		print "2 password: %s" % passwordConfirm
 		if password == passwordConfirm:
@@ -270,6 +285,9 @@ def newUser():
 			login_session['picture'] = picture
 			login_session['password'] = password
 			return redirect(url_for('newUserAuth'))
+		else:
+			flash("Your Password and Confirmation Password didn't match. Please try again.")
+			return redirect(url_for("newUser"))
 	else:
 		return render_template('newUser.html')
 
@@ -322,9 +340,11 @@ def userSignin():
 			login_session['username'] = user.name
 			login_session['email'] = user.email
 			login_session['picture'] = user.picture
+			flash("Welcome!")
 			return redirect(url_for('userPage', user_id = user_id))
 		else:
-			return "Incorrect Password"
+			flash("Incorrect Password")
+			return redirect(url_for("userSignin"))
 	else:
 		return render_template('userSignin.html')
 
@@ -332,18 +352,24 @@ def userSignin():
 @app.route('/userPage/<int:user_id>/', methods = ['GET', 'POST'])
 def userPage(user_id):
 	if 'username' not in login_session:
+		flash("You must be logged in to access that page.")
 		return redirect('/login')
 	user = getUserInfo(user_id)
 	books = session.query(Book)
+	forums = session.query(Forum)
 	for book in books:
 		if book.user_id == user.id:
 			print book.title
-	return render_template('userInfoPage.html', user = user, books = books)
+	for forum in forums:
+		if forum.user_id == user.id:
+			print forum.title
+	return render_template('userInfoPage.html', user = user, books = books, forums = forums)
 
 # Route for editing user information.
 @app.route('/userPage/<int:user_id>/edit', methods = ['GET', 'POST'])
 def editUser(user_id):
 	if 'username' not in login_session:
+		flash("You must be logged in to access that page.")
 		return redirect('/login')
 	user = getUserInfo(login_session['user_id'])
 	editUser = session.query(User).filter_by(id = user_id).one()
@@ -368,6 +394,7 @@ def editUser(user_id):
 @app.route('/forumList/', methods = ['GET', 'POST'])
 def forumList():
 	if 'username' not in login_session:
+		flash("You must be logged in to access that page.")
 		return redirect('/login')
 	user = getUserInfo(login_session['user_id'])
 	forums = session.query(Forum)
@@ -399,6 +426,7 @@ def forumList():
 @app.route('/forums/<int:forum_id>/', methods = ['GET', 'POST'])
 def forum(forum_id, book_id = None):
 	if 'username' not in login_session:
+		flash("You must be logged in to access that page.")
 		return redirect('/login')
 	user = getUserInfo(login_session['user_id'])
 	forum = session.query(Forum).filter_by(id = forum_id).one()
@@ -420,12 +448,14 @@ def forum(forum_id, book_id = None):
 @app.route('/forums/<int:forum_id>/delete', methods = ['GET', 'POST'])
 def deleteForum(forum_id):
 	if 'username' not in login_session:
+		flash("You must be logged in to access that page.")
 		return redirect('/login')
 	user = getUserInfo(login_session['user_id'])
 	forumToDelete = session.query(Forum).filter_by(id = forum_id).one()
 	print forumToDelete.user_id
 	if login_session['user_id'] != forumToDelete.user_id:
-		return "Only user who added this forum can delete it."
+		flash("Only the creator of a forum can delete it.")
+		return redirect(url_for('forumList'))
 	if request.method == 'POST':
 		session.delete(forumToDelete)
 		session.commit()
@@ -437,6 +467,7 @@ def deleteForum(forum_id):
 @app.route('/forumList/<int:book_id>/', methods = ['GET', 'POST'])
 def bookForumList(book_id):
 	if 'username' not in login_session:
+		flash("You must be logged in to access that page.")
 		return redirect('/login')
 	user = getUserInfo(login_session['user_id'])
 	forums = session.query(Forum).join(BookForumConnect).filter(BookForumConnect.book_id == book_id)

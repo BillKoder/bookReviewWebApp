@@ -11,12 +11,21 @@
 		<li><a href="{{url_for('forumList')}}" class="active">Forums</a></li>
 		<li><a href="{{url_for('userPage', user_id = user.id)}}">{{user.name}}</a></li>
 	</ul>
+
+		{% with messages = get_flashed_messages() %}
+	{% if messages %}
+	{% for message in messages %}
+		{{message}}
+		{% endfor %}
+	{% endif %}
+	{% endwith %}
+	
 	<h1>Forums</h1>
 <form action="{{url_for('forumList')}}" method="post">
 	<p>
 		New Forum: <input type="text" name="newForum">
 		<br>
-		Book:
+		New Discussion's Subject:
 		<br>
 		{% for book in books %}
 		 <input type="checkbox" name = "books" value="{{book.id}}">{{book.title}}<br>
@@ -36,7 +45,7 @@
 	</p>
 	{% endfor %}
 
-	<h3>Books:</h3>
+	<h3>Discussions sorted by Books:</h3>
 	{% for book in books %}
 	<a href='{{url_for('bookForumList', book_id = book.id) }}'book.title</a>
 	{{book.title}}

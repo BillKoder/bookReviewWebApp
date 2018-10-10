@@ -15,7 +15,7 @@
 {% with messages = get_flashed_messages() %}
 	{% if messages %}
 			{% for message in messages %}
-				<li><strong>{{message}}</strong></li>
+				<strong>{{message}}</strong>
 			{% endfor %}
 	{% endif %}
 	{% endwith %}
@@ -27,12 +27,9 @@
 	<h3>
 	<a href='{{url_for('bookInformation', book_id = book.id) }}'book.title</a>
 	{{book.title}}
+	<br>
+	<img src="{{book.picture}}" style="width:200px;height:275px; ">
 	</h3>
-	<a href='{{url_for('editBook', book_id = book.id) }}'>Edit</a>
-	<br>
-	<a href='{{url_for('deleteBook', book_id = book.id) }}'>Delete</a>
-	<br>
-	<br>
 	{% endfor %}
 	
 </body>

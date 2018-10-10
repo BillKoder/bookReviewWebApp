@@ -9,8 +9,21 @@
 		<li><a href="{{url_for('bookList')}}">Home</a></li>
 		<li><a href = '{{url_for('newBook')}}'>Add New Book</a></li>
 		<li><a href="{{url_for('forumList')}}">Forums</a></li>
-		<li style="float: right;"><a href="{{url_for('userPage', user_id = user.id)}}">{{user.name}}</a></li>
+		{% if user == None %}
+		<li><a href="{{url_for('login')}}">Login</a></li>
+		{% endif%}
+		<li><a href="{{url_for('userPage', user_id = user.id)}}">{{user.name}}</a></li>
 	</ul>
+
+{% with messages = get_flashed_messages() %}
+	{% if messages %}
+			{% for message in messages %}
+				<strong>{{message}}</strong>
+			{% endfor %}
+	{% endif %}
+	{% endwith %}
+	<br>
+
 	<h1>{{book.title}}</h1>
 
 	<a href='{{url_for('editBook', book_id = book.id) }}'>Edit Book</a>

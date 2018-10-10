@@ -11,6 +11,15 @@
 		<li><a href="{{url_for('forumList')}}">Forums</a></li>
 		<li style="float: right;"><a href="{{url_for('login')}}">Login</a></li>
 	</ul>
+
+		{% with messages = get_flashed_messages() %}
+	{% if messages %}
+	{% for message in messages %}
+		{{message}}
+		{% endfor %}
+	{% endif %}
+	{% endwith %}
+	
 	<h1>New user</h1>
 
 	<form action='{{url_for('newUser')}}' method = 'post'>

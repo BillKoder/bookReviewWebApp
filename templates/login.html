@@ -14,6 +14,13 @@
 		<li><a href="{{url_for('forumList')}}">Forums</a></li>
 		<li><a href="{{url_for('login')}}" class="active">Login</a></li>
 	</ul>
+		{% with messages = get_flashed_messages() %}
+	{% if messages %}
+	{% for message in messages %}
+		{{message}}
+		{% endfor %}
+	{% endif %}
+	{% endwith %}
 	<h2>
 		<a href='{{url_for('userSignin')}}'>Sign In</a>
 		<br>

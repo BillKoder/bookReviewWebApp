@@ -27,7 +27,17 @@
 	<h4>Books Added:</h4>
 	{% for book in books %}
 	{% if book.user_id == user.id %}
-	<a href='{{url_for('bookInformation', book_id = book.id) }}'</a>{{book.title}}
+	<a href='{{url_for('bookInformation', book_id = book.id)}}'>{{book.title}}</a>
+	<br>
+	{% endif %}
+	{% endfor %}
+	<br>
+	<br>
+	<h4>Forums Created:</h4>
+	{% for forum in forums %}
+	{% if forum.user_id == user.id %}
+	<a href='{{url_for('forum', forum_id = forum.id) }}'</a>{{forum.title}}
+	<br>
 	{% endif %}
 	{% endfor %}
 	</p>

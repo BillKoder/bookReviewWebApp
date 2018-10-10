@@ -11,6 +11,7 @@
 		<li><a  href="{{url_for('forumList')}}" class="active">Forums</a></li>
 		<li><a href="{{url_for('userPage', user_id = user.id)}}">{{user.name}}</a></li>
 	</ul>
+
 	<h1>{{forum.title}}</h1>
 	<form action="{{url_for('forum', forum_id = forum.id)}}" method="post">
 		<textarea name="content" id="content" rows="10" cols="65"></textarea>

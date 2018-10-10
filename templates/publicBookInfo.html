@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{book.title}} Information</title>
+	<link rel="stylesheet" type="text/css" href="/static/styles.css">
+</head>
+<body>
+	<ul>
+		<li><a href="{{url_for('bookList')}}">Home</a></li>
+		<li><a href = '{{url_for('newBook')}}'>Add New Book</a></li>
+		<li><a href="{{url_for('forumList')}}">Forums</a></li>
+		<li><a href="{{url_for('login')}}">Login</a></li>
+	</ul>
+	<h1>{{book.title}}</h1>
+	<p>
+		<img src="{{book.picture}}" style="width:200px;height:275px; ">
+			
+		<br>
+		Author: {{book.author}}
+		<br>
+		Subject: {{book.subject}}
+		<br>
+		Summary: {{book.summary}}
+		<br>
+		Added by: {{creator.name}}
+	</p>
+	<br>
+	<a href="{{url}}">Buy Book</a>
+	<br>
+
+</body>
+</html>
